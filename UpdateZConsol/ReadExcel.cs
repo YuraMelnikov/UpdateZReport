@@ -38,6 +38,8 @@ namespace UpdateZConsol
             int row = 13;
             if (uploadDump.devision == "ЭМУ")
                 row = 22;
+            if (uploadDump.devision == "УСР")
+                row = 12;
             string textData = "";
             string textCorrectData = "";
 
@@ -261,7 +263,7 @@ namespace UpdateZConsol
             for (int i = 1; i <= size; i++)
             {
                 Excel.Worksheet ObjWorkSheet = (Excel.Worksheet)ObjWorkBook.Sheets[i];
-                if (ObjWorkSheet.Name == excelListName)
+                if (ObjWorkSheet.Name.Replace(" ", "") == excelListName)
                 {
                     logger.Debug(" class ReadExcel - GetNumListExcel(Excel.Worksheet ObjWorkSheet, DateTime date) ");
                     return i;
@@ -275,7 +277,7 @@ namespace UpdateZConsol
         {
             Excel.Application ObjWorkExcel = new Excel.Application();
             Excel.Workbook ObjWorkBook = ObjWorkExcel.Workbooks.Open("M:\\Производственный отдел\\Z отчет\\отчёт по мощности ПО с 2018_07.xlsx", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            Excel.Worksheet ObjWorkSheet = (Excel.Worksheet)ObjWorkBook.Sheets[1]; //получить 1 лист
+            Excel.Worksheet ObjWorkSheet = (Excel.Worksheet)ObjWorkBook.Sheets[1]; 
 
             DateTime dateCorrect = new DateTime(1901, 1, 1);
             int column = 1;
@@ -308,95 +310,26 @@ namespace UpdateZConsol
                 ObjWorkSheet.Cells[row, 8] = data.kom.ToString();
                 ObjWorkSheet.Cells[row, 9] = data.bol.ToString();
                 ObjWorkSheet.Cells[row, 10] = data.uvo.ToString();
-
                 ObjWorkSheet.Cells[row, 11] = data.work8.ToString();
                 ObjWorkSheet.Cells[row, 12] = data.work10.ToString();
-
                 ObjWorkSheet.Cells[row, 13] = data.setUSR.ToString();
                 ObjWorkSheet.Cells[row, 14] = data.setUSMK.ToString();
                 ObjWorkSheet.Cells[row, 15] = data.setUIS.ToString();
                 ObjWorkSheet.Cells[row, 16] = data.setUSS.ToString();
                 ObjWorkSheet.Cells[row, 17] = data.setEMU.ToString();
-
                 ObjWorkSheet.Cells[row, 18] = data.getUSR.ToString();
                 ObjWorkSheet.Cells[row, 19] = data.getUSMK.ToString();
                 ObjWorkSheet.Cells[row, 20] = data.getUIS.ToString();
                 ObjWorkSheet.Cells[row, 21] = data.getUSS.ToString();
                 ObjWorkSheet.Cells[row, 22] = data.getEMU.ToString();
                 row++;
-                //if (data.devision == "УСР")
-                //    row += 2;
-                //else
-                //    row++;
             }
             string pathVersion = "M:\\Производственный отдел\\Z отчет\\" + DateTime.Now.Year.ToString() + "_" + DateTime.Now.Month.ToString() + "_" +
                 DateTime.Now.Day.ToString();
             ObjWorkBook.Save();
-            ObjWorkBook.Close(false, Type.Missing, Type.Missing); //закрыть не сохраняя
-            ObjWorkExcel.Quit(); // выйти из экселя
-            GC.Collect(); // убрать за собой
+            ObjWorkBook.Close(false, Type.Missing, Type.Missing); 
+            ObjWorkExcel.Quit();
+            GC.Collect(); 
         }
-
-        //public void ReadDataInTabelMasters()
-        //{
-        //    GetStartFinishDate();
-        //    GetStartFinishDateList();
-
-        //    Excel.Application ObjWorkExcel = new Excel.Application();
-        //    Excel.Workbook ObjWorkBook = ObjWorkExcel.Workbooks.Open(@"C:\Users\Yura.Melnikau\Desktop\!Новая структура\01_УСР\" + @"новый табель_Сварочный участок.xlsm", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-        //    Excel.Worksheet ObjWorkSheet = (Excel.Worksheet)ObjWorkBook.Sheets[GetNumListExcel(ObjWorkBook, dateStart)]; //получить 1 лист
-
-        //    string devisionName = "УСР";
-
-        //    foreach (var data in dateList)
-        //    {
-        //        uploadDumpList.Add(new UploadDump(data, devisionName));
-        //    }
-
-
-
-        //    //var lastCell = ObjWorkSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell);//1 ячейку
-        //    //string[,] list = new string[lastCell.Column, lastCell.Row]; // массив значений с листа равен по размеру листу
-        //    //for (int i = 0; i < lastCell.Column; i++) //по всем колонкам
-        //    //    for (int j = 0; j < lastCell.Row; j++) // по всем строкам
-        //    //        list[i, j] = ObjWorkSheet.Cells[j + 1, i + 1].Text.ToString();//считываем текст в строку
-
-
-        //    ObjWorkBook.Close(false, Type.Missing, Type.Missing); //закрыть не сохраняя
-        //    ObjWorkExcel.Quit(); // выйти из экселя
-        //    GC.Collect(); // убрать за собойqs
-        //}
-
-        //private void GetStartFinishDate()
-        //{
-        //    try
-        //    {
-        //        dateStart = DateTime.Now.AddDays(-7);
-        //        dateFinish = DateTime.Now;
-        //        logger.Debug(" class ReadExcel - GetStartFinishDate() ");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        logger.Error(" class ReadExcel - GetStartFinishDate() " + ex.Message.ToString());
-        //    }
-
-        //}
-
-        //private void GetStartFinishDateList()
-        //{
-        //    try
-        //    {
-        //        for (int i = 0; i < 7; i++)
-        //        {
-        //            dateList.Add(dateStart.AddDays(i));
-        //        }
-        //        logger.Debug(" class ReadExcel - GetStartFinishDateList() ");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        logger.Error(" class ReadExcel - GetStartFinishDateList() " + ex.Message.ToString());
-        //    }
-
-        //}
     }
 }
